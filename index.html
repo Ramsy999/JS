@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Índice de Prácticas JS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper: '#FBF9F5',
+            surface: '#F3EFE6',
+            card: '#EFEAE1',
+            ink: '#2C2B29',
+            muted: '#78756F',
+            accent: '#7F4F24',
+            sage: '#588157'
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-paper text-ink font-sans min-h-screen p-6 md:p-12 transition-colors duration-300">
+
+  <div class="max-w-4xl mx-auto">
+    <!-- Encabezado Editorial -->
+    <header class="mb-10 pb-6 border-b border-muted/20">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs uppercase tracking-[0.2em] text-accent font-semibold">Colección de Prácticas</span>
+          <h1 class="font-serif text-3xl md:text-4xl font-semibold mt-1 tracking-tight">JavaScript & DOM</h1>
+        </div>
+        <p id="timeWidget" class="text-xs text-muted font-mono tracking-wide"></p>
+      </div>
+    </header>
+
+    <!-- Buscador y Filtros -->
+    <div class="mb-8 flex flex-col sm:flex-row gap-4 justify-between items-center">
+      <div class="relative w-full sm:w-80">
+        <input 
+          type="text" 
+          id="searchInput"
+          placeholder="Buscar archivo..." 
+          class="w-full bg-surface border border-muted/30 rounded-lg px-4 py-2.5 text-sm text-ink placeholder-muted focus:outline-none focus:border-accent transition"
+        >
+      </div>
+      <span id="counter" class="text-xs text-muted tracking-wider uppercase font-medium self-end sm:self-center"></span>
+    </div>
+
+    <!-- Lista de Archivos -->
+    <main id="filesGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <!-- Inserción dinámica mediante JavaScript -->
+    </main>
+  </div>
+
+  <script>
+    const archivos = [
+      { nombre: "class.html", tag: "Clases", desc: "Introducción a clases en JS" },
+      { nombre: "class2.html", tag: "Clases", desc: "POO y herencia avanzada" },
+      { nombre: "datoa.html", tag: "Datos", desc: "Manejo de variables y datos" },
+      { nombre: "datospersoanles.html", tag: "Datos", desc: "Formulario e ingreso de datos" },
+      { nombre: "dom.html", tag: "DOM", desc: "Manipulación de elementos del DOM" },
+      { nombre: "for.html", tag: "Ciclos", desc: "Estructuras repetitivas for" },
+      { nombre: "menuOp.html", tag: "Lógica", desc: "Menú de opciones interactivo" },
+      { nombre: "metodo.html", tag: "Métodos", desc: "Uso de métodos integrados" },
+      { nombre: "promedio.html", tag: "Cálculo", desc: "Algoritmo de cálculo de promedio" },
+      { nombre: "Suma.html", tag: "Cálculo", desc: "Operaciones aritméticas básicas" },
+      { nombre: "votar18.html", tag: "Lógica", desc: "Validación de mayoría de edad" },
+      { nombre: "zodiaco.html", tag: "Lógica", desc: "Determinación de signo zodiacal" },
+      { nombre: "ADKOH.png", tag: "Recurso", desc: "Imagen / Atributo visual" }
+    ];
+
+    const grid = document.getElementById('filesGrid');
+    const searchInput = document.getElementById('searchInput');
+    const counter = document.getElementById('counter');
+
+    function renderFiles(items) {
+      grid.innerHTML = '';
+      counter.textContent = `${items.length} de ${archivos.length} archivos`;
+
+      if (items.length === 0) {
+        grid.innerHTML = `<p class="col-span-full text-center py-12 text-muted text-sm">No se encontraron archivos.</p>`;
+        return;
+      }
+
+      items.forEach(file => {
+        const card = document.createElement('a');
+        card.href = file.nombre;
+        card.className = "bg-surface hover:bg-card border border-muted/20 hover:border-accent/40 p-5 rounded-xl transition-all duration-200 flex flex-col justify-between group";
+        
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-paper border border-muted/20 text-muted group-hover:border-accent/30 font-medium">
+                ${file.tag}
+              </span>
+              <span class="text-xs text-muted group-hover:text-accent transition">→</span>
+            </div>
+            <h2 class="font-medium text-ink group-hover:text-accent transition text-base mb-1">${file.nombre}</h2>
+            <p class="text-xs text-muted font-light leading-relaxed">${file.desc}</p>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Buscador dinámico en tiempo real
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase().trim();
+      const filtered = archivos.filter(item => 
+        item.nombre.toLowerCase().includes(term) || 
+        item.tag.toLowerCase().includes(term) ||
+        item.desc.toLowerCase().includes(term)
+      );
+      renderFiles(filtered);
+    });
+
+    // Reloj sencillo
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('timeWidget').textContent = now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Carga inicial
+    renderFiles(archivos);
+  </script>
+</body>
+</html>

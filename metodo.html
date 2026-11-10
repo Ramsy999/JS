@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body>
+        <p id="mensaje">Hola Mundo</p>
+        <div id="imagen"></div>
+        <p id="aviso">Mensaje Inicial</p>
+        <button id="btn">Clic</button>
+        <p class="destacado">Texto importante</p>
+        <button class="btn">Enviar</button>
+        <a href="index.html">Ir al Inicio</sa>
+        <script>
+            document.getElementById("mensaje").innerHTML="Bienvenido";
+            document.getElementById("imagen").innerHTML='<img src="ADKOH.png" alt="logo">';
+            var elem=document.getElementById("aviso");
+            elem.textContent="Hola Estudiantes";
+            document.getElementById("btn").style.backgroundColor="blue";
+            document.querySelector(".destacado").style.color="red";
+            document.querySelector(".btn").disabled=true;
+        </script>
+    </body>
+</html>
